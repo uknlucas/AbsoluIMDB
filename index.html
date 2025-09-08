@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Absolu IMDB</title>
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --card: #2d2d2d;
+      --text: #e6e6e6;
+      --muted: #a0a0a0;
+      --accent: #5d8aa8;
+      --accent-2: #7eb6e0;
+      --glass: rgba(45, 45, 45, 0.6);
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(180deg, #121212 0%, var(--bg) 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.35;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .logo b {
+      font-size: 18px;
+      letter-spacing: 0.4px;
+    }
+
+    .logo span {
+      font-weight: 600;
+      opacity: 0.95;
+    }
+
+    .logo-img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow);
+      width: 220px;
+    }
+
+    .search input {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      flex: 1;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .small-btn {
+      background: transparent;
+      border: 0;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .watchlist-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border: 0;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow);
+      transition: transform 0.1s ease;
+    }
+
+    .watchlist-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      background: transparent;
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .tab.active {
+      color: #fff;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: var(--shadow);
+    }
+
+    .content-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .16s ease, box-shadow .16s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .poster {
+      width: 100%;
+      aspect-ratio: 2/3;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #3d3d3d, #2d2d2d);
+      display: flex;
+      align-items: end;
+      padding: 8px;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: inset 0 -18px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-left: auto;
+      color: white;
+    }
+
+    /* Lista de para assistir */
+    .watchlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .search {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-label="Absolu IMDB">
+        <img
+          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F92%2F1b%2Fb3%2F921bb3e7526679fba754cc4258917a96.png&f=1&nofb=1&ipt=2a0fbe64a61b087eed6e563168e2a80188b8c53cd60137c213429edb9b4eb5a1" 
+          alt="Logo Absolu" class="logo-img" />
+        <div>
+          <div style="font-size:12px;opacity:0.9">Absolu</div>
+          <b>IMDB</b>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M21 21l-4.35-4.35" stroke="#9aa0a6" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <circle cx="11" cy="11" r="6" stroke="#9aa0a6" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <input id="q" placeholder="Pesquisar" />
+        </div>
+        <button class="watchlist-btn" id="watchlistBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              fill="white" />
+          </svg>
+          Em Cinema
+        </button>
+      </div>
+    </header>
+
+    <nav>
+      <button class="tab active" data-tab="filmes" onclick="switchTab(event)">Filmes</button>
+      <button class="tab" data-tab="series" onclick="switchTab(event)">Séries</button>
+      <button class="tab" data-tab="animes" onclick="switchTab(event)">Animes</button>
+    </nav>
+
+    <main>
+      <div class="content-top">
+        <div class="section-title" id="sectionTitle">Filmes</div>
+        <div class="filters">
+          <!-- Botão de adicionar removido -->
+        </div>
+      </div>
+
+      <section class="grid" id="grid">
+        <!-- Filmes existentes -->
+        <article class="card" data-tags="animação infantil familiar" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/z8k5EhZZTLsCRF8NWjSe6snWNZg.jpg"
+              alt="Os Incríveis - poster" />
+          </div>
+          <div>
+            <p class="title">Os Incríveis</p>
+            <p class="desc">Família de super-heróis em ação</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.0</span>
+            <span style="font-size:13px;color:var(--muted)">2004</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animação aventura sci-fi" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sm5hbgef2XiHj89vRf5cjBOzOmT.jpg"
+              alt="Planeta do Tesouro - poster" />
+          </div>
+          <div>
+            <p class="title">Planeta do Tesouro</p>
+            <p class="desc">Aventura espacial da boa</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.7</span>
+            <span style="font-size:13px;color:var(--muted)">2002</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animação" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sF8ZL7ALPQWqvlg0FPE2fgdXOkR.jpg"
+              alt="Dragon Ball Z - A batalha dos Deuses" />
+          </div>
+          <div>
+            <p class="title">Dragon Ball Z - A batalha dos Deuses</p>
+            <p class="desc">Filme bão</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.2</span>
+            <span style="font-size:13px;color:var(--muted)">2013</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animação aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iMVuv6Gz5fj7vZ51IjRF3AiW87y.jpg"
+              alt="Mufasa: O Rei Leão" />
+          </div>
+          <div>
+            <p class="title">Mufasa: O Rei Leão</p>
+            <p class="desc">Reii, Mufasaaa</p>
+          </div>
+          <div class="meta">
+            <span class="pill">-</span>
+            <span style="font-size:13px;color:var(--muted)">2024</span>
+          </div>
+        </article>
+
+        <!-- Novos filmes adicionados -->
+        <article class="card" data-tags="animaçao comédia" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jWYTtmxSuWVXP22hxAeXdQZLZrh.jpg"
+              alt="Meu Malvado Favorito 4" />
+          </div>
+          <div>
+            <p class="title">Meu Malvado Favorito 4</p>
+            <p class="desc">Gru e os Minions estão de volta</p>
+          </div>
+          <div class="meta">
+            <span class="pill">-</span>
+            <span style="font-size:13px;color:var(--muted)">2024</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kzYbNJ4JaQiRny0cDi8a6bNX5w3.jpg"
+              alt="Mario: Super Bros" />
+          </div>
+          <div>
+            <p class="title">Mario: Super Bros</p>
+            <p class="desc">Aventura no mundo dos cogumelos</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.1</span>
+            <span style="font-size:13px;color:var(--muted)">2023</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pPvCSyQCY6Xtl78Qo9o0YStUj6o.jpg"
+              alt="Rio" />
+          </div>
+          <div>
+            <p class="title">Rio</p>
+            <p class="desc">Aves em uma aventura no Brasil</p>
+          </div>
+          <div class="meta">
+            <span class="pill">6.9</span>
+            <span style="font-size:13px;color:var(--muted)">2011</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="drama romance" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jrf9rNJbz4IJJGNmb9GFalAv9L1.jpg"
+              alt="O tempo com você" />
+          </div>
+          <div>
+            <p class="title">O tempo com você</p>
+            <p class="desc">História de amor e fantasia</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.2</span>
+            <span style="font-size:13px;color:var(--muted)">2016</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="romance comédia" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/clbkaZ7uy6mdBjrWWPBfnzF8sQP.jpg"
+              alt="Para todos os garotos que já amei" />
+          </div>
+          <div>
+            <p class="title">Para todos os garotos que já amei</p>
+            <p class="desc">Cartas de amor secretas são enviadas</p>
+          </div>
+          <div class="meta">
+            <span class="pill">6.9</span>
+            <span style="font-size:13px;color:var(--muted)">2018</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="comédia" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/4TyTS9O7ECH3mXpazQ6GpJXCqNm.jpg"
+              alt="Possibly the greatest AAT" />
+          </div>
+          <div>
+            <p class="title">Possibly the greatest AAT</p>
+            <p class="desc">Comédia irreverente</p>
+          </div>
+          <div class="meta">
+            <span class="pill">-</span>
+            <span style="font-size:13px;color:var(--muted)">-</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="drama histórico" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/t8fC3K3XnwE6Iso6b1bi5Fdo93n.jpg"
+              alt="Diários de uma apotecária" />
+          </div>
+          <div>
+            <p class="title">Diários de uma apotecária</p>
+            <p class="desc">Drama histórico sobre medicina</p>
+          </div>
+          <div class="meta">
+            <span class="pill">-</span>
+            <span style="font-size:13px;color:var(--muted)">2023</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="drama suspense" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/EljUwZJhpuYfVuSfqY8Pt1xxpH.jpg"
+              alt="Erased" />
+          </div>
+          <div>
+            <p class="title">Erased</p>
+            <p class="desc">Viagem no tempo para evitar tragédia</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.6</span>
+            <span style="font-size:13px;color:var(--muted)">2016</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="drama romance" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2lDneiW73fbtDEIlemzq6Bv2vuR.jpg"
+              alt="A voz do silêncio" />
+          </div>
+          <div>
+            <p class="title">A voz do silêncio</p>
+            <p class="desc">Romance proibido e drama emocional</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.5</span>
+            <span style="font-size:13px;color:var(--muted)">2016</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="musical romance" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yArr9VMatOTEMRZ0H1s8pNHQW78.jpg"
+              alt="La la land" />
+          </div>
+          <div>
+            <p class="title">La la land</p>
+            <p class="desc">Amor e dreams em Los Angeles</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.0</span>
+            <span style="font-size:13px;color:var(--muted)">2016</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="aventura fantasia" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/7oPNnmHicGG1eDYTpInGK0jqDa9.jpg"
+              alt="O Senhor dos Anéis" />
+          </div>
+          <div>
+            <p class="title">O Senhor dos Anéis</p>
+            <p class="desc">Epica jornada na Terra-Média</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.9</span>
+            <span style="font-size:13px;color:var(--muted)">2001</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="drama histórico" data-type="series">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/xWdSSB1La6FcXZUuuwvcqvB6Kdf.jpg"
+              alt="Anne with an E" />
+          </div>
+          <div>
+            <p class="title">Anne with an E</p>
+            <p class="desc">A vida de Anne Shirley em Green Gables</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.7</span>
+            <span style="font-size:13px;color:var(--muted)">2017</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="anime ação" data-type="animes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/thGaW3UXecNJAEdB6rs8sC45JWv.jpg"
+              alt="SPY x FAMILY CÓDIGO: Branco" />
+          </div>
+          <div>
+            <p class="title">SPY x FAMILY CÓDIGO: Branco</p>
+            <p class="desc">Missão secreta da família Forger</p>
+          </div>
+          <div class="meta">
+            <span class="pill">-</span>
+            <span style="font-size:13px;color:var(--muted)">2023</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="comédia romance" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rSjaizM0hpUYt9Fa5HrGBnrm597.jpg"
+              alt="Puppy Love" />
+          </div>
+          <div>
+            <p class="title">Puppy Love</p>
+            <p class="desc">Romance canino e humano</p>
+          </div>
+          <div class="meta">
+            <span class="pill">6.5</span>
+            <span style="font-size:13px;color:var(--muted)">2023</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="anime romance" data-type="animes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iwWGMrybix3DZ4V7TJEL0IPURWT.jpg"
+              alt="Your Name" />
+          </div>
+          <div>
+            <p class="title">Your Name</p>
+            <p class="desc">Dois estranhos trocam de corpo</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.6</span>
+            <span style="font-size:13px;color:var(--muted)">2016</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5uqxMHM7YLKk6yni4bOE0D6DVz8.jpg"
+              alt="Como treinar seu Dragão 3" />
+          </div>
+          <div>
+            <p class="title">Como treinar seu Dragão 3</p>
+            <p class="desc">Última aventura de Soluço e Banguela</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.8</span>
+            <span style="font-size:13px;color:var(--muted)">2019</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/brmRmSagvnQVgIw1lBF4CaKpaoU.jpg"
+              alt="Como treinar seu Dragão 2" />
+          </div>
+          <div>
+            <p class="title">Como treinar seu Dragão 2</p>
+            <p class="desc">Soluço descobre segredos de sua família</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.8</span>
+            <span style="font-size:13px;color:var(--muted)">2014</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao aventura" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sLpQSFj8A5jyUZStwzWfKpoJoAx.jpg"
+              alt="Como treinar seu Dragão 1" />
+          </div>
+          <div>
+            <p class="title">Como treinar seu Dragão 1</p>
+            <p class="desc">Amizade entre viking e dragão</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.1</span>
+            <span style="font-size:13px;color:var(--muted)">2010</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao ação" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6et98yxnctR6uH16x3uJuIVKsPf.jpg"
+              alt="Os Incríveis 2" />
+          </div>
+          <div>
+            <p class="title">Os Incríveis 2</p>
+            <p class="desc">Família de super-heróis retorna</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.5</span>
+            <span style="font-size:13px;color:var(--muted)">2018</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="ficção científica" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/i996T0lI1fGtFEowiH3V6eZthL0.jpg"
+              alt="De volta para o Futuro" />
+          </div>
+          <div>
+            <p class="title">De volta para o Futuro</p>
+            <p class="desc">Viagem no tempo com Doc and Marty</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.5</span>
+            <span style="font-size:13px;color:var(--muted)">1985</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao musical" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/lFmcvykdQwGjVOJEQB0t0hwCX9c.jpg"
+              alt="Enrolados" />
+          </div>
+          <div>
+            <p class="title">Enrolados</p>
+            <p class="desc">Rapunzel moderna em aventura</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.7</span>
+            <span style="font-size:13px;color:var(--muted)">2010</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="anime aventura" data-type="animes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/QcS3MhdUiOEUOjY451FOFInZXF.jpg"
+              alt="Suzume" />
+          </div>
+          <div>
+            <p class="title">Suzume</p>
+            <p class="desc">Jornada para fechar portais misteriosos</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.0</span>
+            <span style="font-size:13px;color:var(--muted)">2022</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao musical" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/obpbBBgRLjTvTgfvQxA3dzMXOk6.jpg"
+              alt="Viva a vida é uma festa" />
+          </div>
+          <div>
+            <p class="title">Viva a vida é uma festa</p>
+            <p class="desc">Celebração do Dia dos Mortos no México</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.4</span>
+            <span style="font-size:13px;color:var(--muted)">2017</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="anime comédia" data-type="animes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yY8JGpdwAiT9ZKaOzQJHIa6E4Ga.jpg"
+              alt="Spy Family" />
+          </div>
+          <div>
+            <p class="title">Spy Family</p>
+            <p class="desc">Família espiã com segredos</p>
+          </div>
+          <div class="meta">
+            <span class="pill">8.6</span>
+            <span style="font-size:13px;color:var(--muted)">2022</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="comédia" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oXHNdN1hjg6RFQ5NP618KSAIrdE.jpg"
+              alt="O Pior vizinho do mundo" />
+          </div>
+          <div>
+            <p class="title">O Pior vizinho do mundo</p>
+            <p class="desc">Comédia sobre vizinhos problemáticos</p>
+          </div>
+          <div class="meta">
+            <span class="pill">6.2</span>
+            <span style="font-size:13px;color:var(--muted)">2022</span>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao ação" data-type="filmes">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zBDs1y1fK921HrhdRMqlloUqp5Z.jpg"
+              alt="Big Hero 6" />
+          </div>
+          <div>
+            <p class="title">Big Hero 6</p>
+            <p class="desc">Robô inflável e grupo de heróis</p>
+          </div>
+          <div class="meta">
+            <span class="pill">7.8</span>
+            <span style="font-size:13px;color:var(--muted)">2014</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- Seção para a lista "Em Cinema" (inicialmente oculta) -->
+      <div id="watchlistSection" style="display: none;">
+        <div class="content-top">
+          <div class="section-title">Minha Lista: Em Cinema</div>
+        </div>
+        <div class="watchlist-grid" id="watchlistGrid">
+          <!-- Conteúdo será adicionado dinamicamente via JavaScript -->
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Dados da aplicação
+      let currentTab = 'filmes';
+      
+      // Lista fixa de itens "Em Cinema" (editável apenas via código)
+      // Para modificar, edite este array e recarregue a página
+      const defaultWatchlist = [
+        {
+          title: "Os Incríveis",
+          desc: "Família de super-heróis em ação",
+          year: "2004",
+          rating: "8.0",
+          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/z8k5EhZZTLsCRF8NWjSe6snWNZg.jpg",
+          tags: "animação infantil familiar",
+          type: "filmes"
+        },
+        {
+          title: "Planeta do Tesouro",
+          desc: "Aventura espacial da boa",
+          year: "2002",
+          rating: "7.7",
+          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sm5hbgef2XiHj89vRf5cjBOzOmT.jpg",
+          tags: "animação aventura sci-fi",
+          type: "filmes"
+        },
+        {
+          title: "Your Name",
+          desc: "Dois estranhos trocam de corpo",
+          year: "2016",
+          rating: "8.6",
+          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iwWGMrybix3DZ4V7TJEL0IPURWT.jpg",
+          tags: "anime romance",
+          type: "animes"
+        }
+      ];
+      
+      let watchlist = defaultWatchlist;
+
+      // Elementos DOM
+      const tabs = document.querySelectorAll('.tab');
+      const grid = document.getElementById('grid');
+      const watchlistGrid = document.getElementById('watchlistGrid');
+      const watchlistSection = document.getElementById('watchlistSection');
+      const watchlistBtn = document.getElementById('watchlistBtn');
+      const q = document.getElementById('q');
+      const sectionTitle = document.getElementById('sectionTitle');
+
+      // Alternar entre abas
+      function switchTab(e) {
+        tabs.forEach(t => t.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        currentTab = e.currentTarget.dataset.tab;
+        sectionTitle.textContent = ({
+          filmes: 'Filmes',
+          series: 'Séries',
+          animes: 'Animes',
+        })[currentTab] || 'Explorar';
+
+        filterGrid();
+      }
+
+      // Alternar entre conteúdo principal e lista "Em Cinema"
+      watchlistBtn.addEventListener('click', () => {
+        const isWatchlistVisible = watchlistSection.style.display !== 'none';
+
+        if (isWatchlistVisible) {
+          // Voltar para o conteúdo principal
+          watchlistSection.style.display = 'none';
+          grid.style.display = 'grid';
+          watchlistBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="white"/>
+          </svg>
+          Em Cinema
+        `;
+        } else {
+          // Mostrar lista "Em Cinema"
+          watchlistSection.style.display = 'block';
+          grid.style.display = 'none';
+          watchlistBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/>
+          </svg>
+          Voltar
+        `;
+          renderWatchlist();
+        }
+      });
+
+      // Filtrar grid por pesquisa
+      function filterGrid() {
+        const query = q.value.trim().toLowerCase();
+        const cards = Array.from(grid.querySelectorAll('.card'));
+
+        cards.forEach(card => {
+          const title = card.querySelector('.title')?.textContent.toLowerCase() || '';
+          const desc = card.querySelector('.desc')?.textContent.toLowerCase() || '';
+          const tags = card.dataset.tags || '';
+          const type = card.dataset.type || '';
+
+          const matchesQuery = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+          const matchesTab = currentTab === 'all' || type === currentTab;
+
+          card.style.display = (matchesQuery && matchesTab) ? 'flex' : 'none';
+        });
+      }
+
+      // Renderizar lista "Em Cinema"
+      function renderWatchlist() {
+        watchlistGrid.innerHTML = '';
+
+        if (watchlist.length === 0) {
+          watchlistGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--muted);">
+            Sua lista "Em Cinema" está vazia.<br>
+            A lista é gerenciada apenas via código.
+          </div>
+        `;
+          return;
+        }
+
+        watchlist.forEach(item => {
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.innerHTML = `
+          <div class="poster">
+            <img src="${item.image}" alt="${item.title} - poster" />
+          </div>
+          <div>
+            <p class="title">${item.title}</p>
+            <p class="desc">${item.desc}</p>
+          </div>
+          <div class="meta">
+            <span class="pill">${item.rating}</span>
+            <span style="font-size:13px;color:var(--muted)">${item.year}</span>
+          </div>
+        `;
+          watchlistGrid.appendChild(card);
+        });
+      }
+
+      // Inicialização
+      function init() {
+        filterGrid();
+
+        // Busca ao digitar (debounce leve)
+        let debounce;
+        q.addEventListener('input', () => {
+          clearTimeout(debounce);
+          debounce = setTimeout(filterGrid, 180);
+        });
+      }
+
+      // Executar inicialização quando o DOM estiver carregado
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
