@@ -28,6 +28,8 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       line-height: 1.35;
+      /* Previne rolagem horizontal */
+      overflow-x: hidden;
     }
 
     .wrap {
@@ -132,6 +134,9 @@
       position: relative;
       cursor: pointer;
       border: 1px solid #333;
+      /* Melhor desempenho em mobile */
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     .card:hover {
@@ -161,6 +166,9 @@
       object-fit: cover;
       border-radius: 6px;
       display: block;
+      /* Otimização para mobile */
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .title {
@@ -184,6 +192,8 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
       border: 1px solid #333;
+      /* Melhor desempenho */
+      transform: translateZ(0);
     }
 
     .carousel-container {
@@ -202,6 +212,9 @@
       height: 300px;
       object-fit: cover;
       display: block;
+      /* Otimização para mobile */
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .carousel-info {
@@ -237,6 +250,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      /* Melhor acessibilidade em mobile */
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .carousel-control.prev {
@@ -263,6 +279,8 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.3);
       cursor: pointer;
+      /* Melhor acessibilidade */
+      -webkit-tap-highlight-color: transparent;
     }
 
     .carousel-indicator.active {
@@ -298,6 +316,8 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.9);
       overflow: auto;
+      /* Suaviza a abertura/fechamento */
+      transition: opacity 0.3s ease;
     }
 
     .modal-content {
@@ -320,6 +340,9 @@
       font-weight: bold;
       color: var(--text);
       cursor: pointer;
+      /* Área de toque maior */
+      padding: 5px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .modal-body {
@@ -368,7 +391,7 @@
       color: var(--muted);
     }
 
-    /* Estilos para dispositivos móveis */
+    /* Melhorias para dispositivos móveis */
     @media (max-width: 768px) {
       .wrap {
         padding: 15px;
@@ -397,9 +420,9 @@
       }
 
       .carousel-control {
-        width: 30px;
-        height: 30px;
-        padding: 5px;
+        width: 35px;
+        height: 35px;
+        padding: 8px;
       }
 
       .carousel-title {
@@ -444,11 +467,51 @@
       }
     }
 
+    /* Otimizações específicas para telas muito pequenas */
     @media (max-width: 480px) {
+      .wrap {
+        padding: 12px;
+        margin: 10px auto;
+      }
+
+      .logo {
+        padding: 8px 14px;
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .logo b {
+        font-size: 18px;
+      }
+
+      .search {
+        padding: 10px 14px;
+      }
+
+      .search input {
+        font-size: 16px;
+        /* Melhora a usabilidade evitando zoom */
+      }
 
       .grid,
       .now-playing-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .card {
+        padding: 8px;
+      }
+
+      .title {
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .carousel {
+        margin: 15px 0;
+        border-radius: 8px;
       }
 
       .carousel-slide img {
@@ -456,7 +519,7 @@
       }
 
       .carousel-info {
-        padding: 10px;
+        padding: 12px;
       }
 
       .carousel-title {
@@ -464,9 +527,99 @@
         margin-bottom: 5px;
       }
 
-      .logo {
-        width: 100%;
-        justify-content: center;
+      .carousel-control {
+        width: 32px;
+        height: 32px;
+        padding: 6px;
+      }
+
+      .carousel-indicator {
+        width: 8px;
+        height: 8px;
+      }
+
+      .section-title {
+        font-size: 16px;
+      }
+
+      .now-playing {
+        margin: 30px 0;
+      }
+
+      .modal-content {
+        margin: 5% auto;
+        width: 95%;
+        padding: 12px;
+        border-radius: 10px;
+      }
+
+      .modal-poster {
+        max-width: 150px;
+      }
+
+      .modal-title {
+        font-size: 1.2rem;
+      }
+
+      .modal-meta {
+        gap: 10px;
+        font-size: 14px;
+      }
+
+      .close-modal {
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+      }
+    }
+
+    /* Para telas extremamente pequenas (menos de 340px) */
+    @media (max-width: 340px) {
+
+      .grid,
+      .now-playing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .carousel-slide img {
+        height: 140px;
+      }
+
+      .carousel-control {
+        width: 28px;
+        height: 28px;
+      }
+
+      .modal-poster {
+        max-width: 130px;
+      }
+    }
+
+    /* Melhorias de acessibilidade para toque */
+    @media (hover: none) and (pointer: coarse) {
+      .card:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+        border-color: #333;
+      }
+
+      .card:active {
+        transform: scale(0.98);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .carousel-control:active {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    /* Prevenir zoom em inputs em iOS */
+    @media screen and (max-width: 768px) {
+
+      input,
+      select,
+      textarea {
+        font-size: 16px !important;
       }
     }
   </style>
@@ -476,10 +629,6 @@
   <div class="wrap">
     <header>
       <div class="logo" aria-label="Absolu IMDB">
-        <svg class="logo-img" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2z" fill="#cc0000" />
-          <path d="M22 12h-4v10h-4V12h-4V8h12v4z" fill="#fff" />
-        </svg>
         <div>
           <b>ABSOLU</b><span style="font-weight: 300; margin-left: 4px;">IMDB</span>
         </div>
@@ -504,12 +653,12 @@
         <div class="carousel-container" id="carouselContainer">
           <!-- Slides serão adicionados via JavaScript -->
         </div>
-        <button class="carousel-control prev" onclick="moveSlide(-1)">
+        <button class="carousel-control prev" onclick="moveSlide(-1)" aria-label="Slide anterior">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
-        <button class="carousel-control next" onclick="moveSlide(1)">
+        <button class="carousel-control next" onclick="moveSlide(1)" aria-label="Próximo slide">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -539,7 +688,7 @@
           data-desc="Família de Super-heróis vs Bochecha.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/z8k5EhZZTLsCRF8NWjSe6snWNZg.jpg"
-              alt="Os Incríveis - poster" />
+              alt="Os Incríveis - poster" loading="lazy" />
           </div>
           <div>
             <p class="title">Os Incríveis</p>
@@ -550,7 +699,7 @@
           data-desc="Aventura espacial da boa com Espuma e a rapazeada.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sm5hbgef2XiHj89vRf5cjBOzOmT.jpg"
-              alt="Planeta do Tesouro - poster" />
+              alt="Planeta do Tesouro - poster" loading="lazy" />
           </div>
           <div>
             <p class="title">Planeta do Tesouro</p>
@@ -561,7 +710,7 @@
           data-desc="Desepertar, briga por pudim e a busca pelo Deus Super Sayajin.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sF8ZL7ALPQWqvlg0FPE2fgdXOkR.jpg"
-              alt="Dragon Ball Z - A batalha dos Deuses" />
+              alt="Dragon Ball Z - A batalha dos Deuses" loading="lazy" />
           </div>
           <div>
             <p class="title">Dragon Ball Z - batalha dos Deuses</p>
@@ -572,7 +721,7 @@
           data-desc="Leões que cantam, um é rei e o outro faz uma arapuca.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iMVuv6Gz5fj7vZ51IjRF3AiW87y.jpg"
-              alt="Mufasa: O Rei Leão" />
+              alt="Mufasa: O Rei Leão" loading="lazy" />
           </div>
           <div>
             <p class="title">Mufasa: O Rei Leão</p>
@@ -583,7 +732,7 @@
           data-desc="Enacanadores que desceram pelo cano e tentam fazer um resgate.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kzYbNJ4JaQiRny0cDi8a6bNX5w3.jpg"
-              alt="Mario: Super Bros" />
+              alt="Mario: Super Bros" loading="lazy" />
           </div>
           <div>
             <p class="title">Mario: Super Bros</p>
@@ -593,7 +742,8 @@
         <article class="card" data-tags="animação" data-type="filmes" data-rating="9" data-year="2011"
           data-desc="Araras em extinção, samba e brigas no Brasil.">
           <div class="poster">
-            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pPvCSyQCY6Xtl78Qo9o0YStUj6o.jpg" alt="Rio" />
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pPvCSyQCY6Xtl78Qo9o0YStUj6o.jpg" alt="Rio"
+              loading="lazy" />
           </div>
           <div>
             <p class="title">Rio</p>
@@ -604,7 +754,7 @@
           data-desc="Cartas secretas enviadas, desespero e confusão.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/76sdtdElf7R20KKNWxKKBP7UxWz.jpg"
-              alt="Para todos os garotos que já amei" />
+              alt="Para todos os garotos que já amei" loading="lazy" />
           </div>
           <div>
             <p class="title">Para todos os garotos que já amei</p>
@@ -614,7 +764,7 @@
         <article class="card" data-tags="comédia" data-type="animes" data-rating="-" data-year="2025" data-desc="">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/4TyTS9O7ECH3mXpazQ6GpJXCqNm.jpg"
-              alt="Possibly the greatest AAT" />
+              alt="Possibly the greatest AAT" loading="lazy" />
           </div>
           <div>
             <p class="title">Possibly the GAAT</p>
@@ -625,7 +775,7 @@
           data-desc="Um arrasador de corações e uma mulher que gosta de beber veneno.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/t8fC3K3XnwE6Iso6b1bi5Fdo93n.jpg"
-              alt="Diários de uma apotecária" />
+              alt="Diários de uma apotecária" loading="lazy" />
           </div>
           <div>
             <p class="title">Diários de uma apotecária</p>
@@ -635,8 +785,8 @@
         <article class="card" data-tags="drama suspense" data-type="animes" data-rating="9.7" data-year="2016"
           data-desc="Viagem no tempo e uma corrida no passado para mudar o futuro.">
           <div class="poster">
-            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/EljUwZJhpuYfVuSfqY8Pt1xxpH.jpg"
-              alt="Erased" />
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/EljUwZJhpuYfVuSfqY8Pt1xxpH.jpg" alt="Erased"
+              loading="lazy" />
           </div>
           <div>
             <p class="title">Erased</p>
@@ -647,7 +797,7 @@
           data-desc="Do Bullying ao Romance.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2lDneiW73fbtDEIlemzq6Bv2vuR.jpg"
-              alt="A voz do silêncio" />
+              alt="A voz do silêncio" loading="lazy" />
           </div>
           <div>
             <p class="title">A voz do silêncio</p>
@@ -658,7 +808,7 @@
           data-desc="Musical para confundir o público.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yArr9VMatOTEMRZ0H1s8pNHQW78.jpg"
-              alt="La la land" />
+              alt="La la land" loading="lazy" />
           </div>
           <div>
             <p class="title">La la land</p>
@@ -669,7 +819,7 @@
           data-desc="Épica jornada com um Mago gente boa, um anão engraçado e a galera.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/7oPNnmHicGG1eDYTpInGK0jqDa9.jpg"
-              alt="O Senhor dos Anéis" />
+              alt="O Senhor dos Anéis" loading="lazy" />
           </div>
           <div>
             <p class="title">O Senhor dos Anéis</p>
@@ -680,7 +830,7 @@
           data-desc="Confusão pelo chocolate roubado e acerto de contas.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/thGaW3UXecNJAEdB6rs8sC45JWv.jpg"
-              alt="SPY x FAMILY CÓDIGO: Branco" />
+              alt="SPY x FAMILY CÓDIGO: Branco" loading="lazy" />
           </div>
           <div>
             <p class="title">SPY x FAMILY CÓDIGO: Branco</p>
@@ -691,7 +841,7 @@
           data-desc="Romance canino e humano.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rSjaizM0hpUYt9Fa5HrGBnrm597.jpg"
-              alt="Puppy Love" />
+              alt="Puppy Love" loading="lazy" />
           </div>
           <div>
             <p class="title">Puppy Love</p>
@@ -702,7 +852,7 @@
           data-desc="Dois estranhos trocam de corpo.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iwWGMrybix3DZ4V7TJEL0IPURWT.jpg"
-              alt="Your Name" />
+              alt="Your Name" loading="lazy" />
           </div>
           <div>
             <p class="title">Your Name</p>
@@ -713,7 +863,7 @@
           data-desc="Soluço decobre de onde vem os talentos.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/brmRmSagvnQVgIw1lBF4CaKpaoU.jpg"
-              alt="Como treinar seu Dragão 2" />
+              alt="Como treinar seu Dragão 2" loading="lazy" />
           </div>
           <div>
             <p class="title">Como treinar seu Dragão 2</p>
@@ -721,10 +871,10 @@
         </article>
 
         <article class="card" data-tags="animaçao aventura" data-type="filmes" data-rating="10" data-year="2010"
-          data-desc="Um drgão e um humano convivendo juntos.">
+          data-desc="Um dragão e um humano convivendo juntos.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sLpQSFj8A5jyUZStwzWfKpoJoAx.jpg"
-              alt="Como treinar seu Dragão 1" />
+              alt="Como treinar seu Dragão 1" loading="lazy" />
           </div>
           <div>
             <p class="title">Como treinar seu Dragão 1</p>
@@ -735,7 +885,7 @@
           data-desc="Lutas em família, e zezé com novos poderes.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6et98yxnctR6uH16x3uJuIVKsPf.jpg"
-              alt="Os Incríveis 2" />
+              alt="Os Incríveis 2" loading="lazy" />
           </div>
           <div>
             <p class="title">Os Incríveis 2</p>
@@ -746,7 +896,7 @@
           data-desc="Viagem no tempo e incredulidade.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/i996T0lI1fGtFEowiH3V6eZthL0.jpg"
-              alt="De volta para o Futuro" />
+              alt="De volta para o Futuro" loading="lazy" />
           </div>
           <div>
             <p class="title">De volta para o Futuro</p>
@@ -757,7 +907,7 @@
           data-desc="Rapunzel moderna querendo curtir a vida con o Bezerra.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/lFmcvykdQwGjVOJEQB0t0hwCX9c.jpg"
-              alt="Enrolados" />
+              alt="Enrolados" loading="lazy" />
           </div>
           <div>
             <p class="title">Enrolados</p>
@@ -767,8 +917,8 @@
         <article class="card" data-tags="anime aventura" data-type="filmes" data-rating="7" data-year="2022"
           data-desc="Portais malucos, cadeira e o gato.">
           <div class="poster">
-            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/QcS3MhdUiOEUOjY451FOFInZXF.jpg"
-              alt="Suzume" />
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/QcS3MhdUiOEUOjY451FOFInZXF.jpg" alt="Suzume"
+              loading="lazy" />
           </div>
           <div>
             <p class="title">Suzume</p>
@@ -776,10 +926,10 @@
         </article>
 
         <article class="card" data-tags="animaçao musical" data-type="filmes" data-rating="7.5" data-year="2017"
-          data-desc="Música, viagem and reviravoltas.">
+          data-desc="Música, viagem e reviravoltas.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/obpbBBgRLjTvTgfvQxA3dzMXOk6.jpg"
-              alt="Viva a vida é uma festa" />
+              alt="Viva a vida é uma festa" loading="lazy" />
           </div>
           <div>
             <p class="title">Viva a vida é uma festa</p>
@@ -790,7 +940,7 @@
           data-desc="Todos guardam um segredo.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yY8JGpdwAiT9ZKaOzQJHIa6E4Ga.jpg"
-              alt="Spy Family" />
+              alt="Spy Family" loading="lazy" />
           </div>
           <div>
             <p class="title">Spy x Family</p>
@@ -801,7 +951,7 @@
           data-desc="Vizinhos e confusão.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oXHNdN1hjg6RFQ5NP618KSAIrdE.jpg"
-              alt="O Pior vizinho do mundo" />
+              alt="O Pior vizinho do mundo" loading="lazy" />
           </div>
           <div>
             <p class="title">O Pior vizinho do mundo</p>
@@ -812,10 +962,21 @@
           data-desc="Robô da paz e o pessoal.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zBDs1y1fK921HrhdRMqlloUqp5Z.jpg"
-              alt="Big Hero 6" />
+              alt="Big Hero 6" loading="lazy" />
           </div>
           <div>
             <p class="title">Big Hero 6</p>
+          </div>
+        </article>
+
+        <article class="card" data-tags="animaçao ação" data-type="filmes" data-rating="9" data-year="2001"
+          data-desc="Ogro, Alazão, Dragão apaixonado e uma princesa">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg" alt="Shrek"
+              loading="lazy" />
+          </div>
+          <div>
+            <p class="title">Shrek</p>
           </div>
         </article>
 
@@ -823,7 +984,7 @@
           data-desc="Uma fada com talento de consertar os trem e um rato chamado queijo.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/azgjMUMoUJB2yheVcN1Ae8lFNeD.jpg"
-              alt="Tinker Bell" />
+              alt="Tinker Bell" loading="lazy" />
           </div>
           <div>
             <p class="title">Tinker Bell</p>
@@ -856,9 +1017,17 @@
       // Dados da aplicação
       let currentSlide = 0;
       let carouselItems = [];
+      let carouselInterval;
 
       // Lista personalizada para o carrossel (você pode adicionar seus próprios links aqui)
       const carouselData = [
+        {
+          title: "",
+          image: "https://image.tmdb.org/t/p/original/mrPHRMwy7KBiNstewa5XGLMXVb5.jpg",
+          desc: "",
+          year: "",
+          rating: ""
+        },
         {
           title: "",
           image: "https://image.tmdb.org/t/p/original/qEFTuoFIAwrnVn7IsvE8RVt2TK3.jpg",
@@ -869,13 +1038,6 @@
         {
           title: "",
           image: "https://image.tmdb.org/t/p/original/tNXi6bWdWWulAaeQgMuLUfVS0fI.jpg",
-          desc: "",
-          year: "",
-          rating: ""
-        },
-        {
-          title: "",
-          image: "https://image.tmdb.org/t/p/original/lSqMPi6bDWvjGPtWkcxST1iwl7j.jpg",
           desc: "",
           year: "",
           rating: ""
@@ -899,11 +1061,20 @@
       // Lista "Em Cartaz"
       const nowPlayingData = [
         {
+          title: "Shrek 2",
+          desc: "",
+          year: "2004",
+          rating: "",
+          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
+          tags: "",
+          type: "filmes"
+        },
+        {
           title: "O Jardim das Palavras",
           desc: "",
           year: "1988",
           rating: "",
-          image: "https://image.tmdb.org/t/p/original/cs5CNk8Yqvg7586juo5u8biRivl.jpg",
+          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6TFbmnHFUxWEnqqjyf8gR2s5Hxf.jpg",
           tags: "",
           type: "filmes"
         },
@@ -998,12 +1169,58 @@
           type: "filmes"
         },
       ];
+
       // Inicialização
       document.addEventListener('DOMContentLoaded', function () {
         initCarousel();
         initNowPlaying();
         initModal();
+        initTouchEvents();
       });
+
+      // Inicializar eventos de toque para o carrossel
+      function initTouchEvents() {
+        const carousel = document.querySelector('.carousel-container');
+        let startX, movedX, isDragging = false;
+
+        carousel.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          isDragging = true;
+          // Pausar transição automática durante o arraste
+          clearInterval(carouselInterval);
+        });
+
+        carousel.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          movedX = e.touches[0].clientX;
+        });
+
+        carousel.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
+
+          // Determinar a direção do swipe
+          if (startX - movedX > 50) {
+            // Swipe para a esquerda - próximo slide
+            moveSlide(1);
+          } else if (movedX - startX > 50) {
+            // Swipe para a direita - slide anterior
+            moveSlide(-1);
+          }
+
+          // Reiniciar transição automática
+          startCarouselAutoPlay();
+        });
+      }
+
+      // Iniciar transição automática do carrossel
+      function startCarouselAutoPlay() {
+        clearInterval(carouselInterval);
+        carouselInterval = setInterval(() => {
+          currentSlide = (currentSlide + 1) % carouselData.length;
+          updateCarousel();
+        }, 5000);
+      }
 
       // Inicializar o carrossel
       function initCarousel() {
@@ -1015,7 +1232,7 @@
           const slide = document.createElement('div');
           slide.className = 'carousel-slide';
           slide.innerHTML = `
-            <img src="${item.image}" alt="${item.title}">
+            <img src="${item.image}" alt="${item.title}" loading="lazy">
             <div class="carousel-info">
               <h2 class="carousel-title">${item.title}</h2>
             </div>
@@ -1034,10 +1251,7 @@
         });
 
         // Iniciar transição automática
-        setInterval(() => {
-          currentSlide = (currentSlide + 1) % carouselData.length;
-          updateCarousel();
-        }, 5000);
+        startCarouselAutoPlay();
       }
 
       // Atualizar o carrossel
@@ -1060,6 +1274,8 @@
       function moveSlide(direction) {
         currentSlide = (currentSlide + direction + carouselData.length) % carouselData.length;
         updateCarousel();
+        // Reiniciar o temporizador ao navegar manualmente
+        startCarouselAutoPlay();
       }
 
       // Inicializar a seção "Em Cartaz"
@@ -1071,7 +1287,7 @@
           card.className = 'card';
           card.innerHTML = `
             <div class="poster">
-              <img src="${item.image}" alt="${item.title}">
+              <img src="${item.image}" alt="${item.title}" loading="lazy">
             </div>
             <div>
               <p class="title">${item.title}</p>
