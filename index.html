@@ -44,6 +44,8 @@
       gap: 18px;
       margin-bottom: 18px;
       flex-wrap: wrap;
+      justify-content: flex-start;
+      /* Centraliza o logo */
     }
 
     .logo {
@@ -73,34 +75,6 @@
       width: 28px;
       height: 28px;
       object-fit: contain;
-    }
-
-    .header-right {
-      margin-left: auto;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .search {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow);
-      width: 220px;
-      border: 1px solid #333;
-    }
-
-    .search input {
-      border: 0;
-      outline: 0;
-      background: transparent;
-      flex: 1;
-      font-size: 14px;
-      color: var(--text);
     }
 
     .content-top {
@@ -404,17 +378,6 @@
         gap: 12px;
       }
 
-      .header-right {
-        margin-left: 0;
-        width: 100%;
-        justify-content: center;
-      }
-
-      .search {
-        width: 100%;
-        max-width: 100%;
-      }
-
       .carousel-slide img {
         height: 200px;
       }
@@ -483,15 +446,6 @@
 
       .logo b {
         font-size: 18px;
-      }
-
-      .search {
-        padding: 10px 14px;
-      }
-
-      .search input {
-        font-size: 16px;
-        /* Melhora a usabilidade evitando zoom */
       }
 
       .grid,
@@ -633,18 +587,6 @@
           <b>ABSOLU</b><span style="font-weight: 300; margin-left: 4px;">IMDB</span>
         </div>
       </div>
-
-      <div class="header-right">
-        <div class="search" role="search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path d="M21 21l-4.35-4.35" stroke="#9aa0a6" stroke-width="1.6" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <circle cx="11" cy="11" r="6" stroke="#9aa0a6" stroke-width="1.6" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-          <input id="q" placeholder="Pesquisar" />
-        </div>
-      </div>
     </header>
 
     <main>
@@ -740,7 +682,7 @@
         </article>
 
         <article class="card" data-tags="animação" data-type="filmes" data-rating="9" data-year="2011"
-          data-desc="Araras em extinção, samba e brigas no Brasil.">
+          data-desc="Araras em extinção, samba и brigas no Brasil.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pPvCSyQCY6Xtl78Qo9o0YStUj6o.jpg" alt="Rio"
               loading="lazy" />
@@ -783,7 +725,7 @@
         </article>
 
         <article class="card" data-tags="drama suspense" data-type="animes" data-rating="9.7" data-year="2016"
-          data-desc="Viagem no tempo e uma corrida no passado para mudar o futuro.">
+          data-desc="Viagem no tempo e uma corrida no pastado para mudar o futuro.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/EljUwZJhpuYfVuSfqY8Pt1xxpH.jpg" alt="Erased"
               loading="lazy" />
@@ -1335,7 +1277,7 @@
         });
       }
 
-      // Abrir modal com informações
+      // Abrir modal with informações
       function openModal(title, image, year, rating, desc) {
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalImage').src = image;
