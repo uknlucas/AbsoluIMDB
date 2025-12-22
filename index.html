@@ -626,7 +626,19 @@
 
       <section class="grid" id="grid">
         <!-- Cards sem descrição visível inicialmente -->
-       
+
+       <article class="card" data-tags="animação" data-type="filmes" data-rating="9.9" data-year="2019"
+          data-desc="Paqueraa e o fim da jornada.">
+          <div class="poster">
+            <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5uqxMHM7YLKk6yni4bOE0D6DVz8.jpg"
+              alt="Como treinar seu Dragão 3 - Poster" loading="lazy" />
+          </div>
+          <div>
+            <p class="title">Como treinar seu Dragão 3</p>
+          </div>
+        </article>
+
+
         <article class="card" data-tags="animação" data-type="filmes" data-rating="7.5" data-year="1999"
           data-desc="Um robô gigante que se alimenta de ferro.">
           <div class="poster">
@@ -637,7 +649,7 @@
             <p class="title">Gigante de ferro</p>
           </div>
         </article>
-        
+
         <article class="card" data-tags="animação" data-type="filmes" data-rating="10" data-year="2004"
           data-desc="Família de Super-heróis vs Bochecha.">
           <div class="poster">
@@ -684,7 +696,7 @@
         </article>
 
         <article class="card" data-tags="aventura" data-type="filmes" data-rating="10" data-year="2024"
-          data-desc="Leões que cantam, um é rei e o outro faz uma arapuca.">
+          data-desc="Leões, cantoria, reinados e armadilhas.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iMVuv6Gz5fj7vZ51IjRF3AiW87y.jpg"
               alt="Mufasa: O Rei Leão" loading="lazy" />
@@ -706,7 +718,7 @@
         </article>
 
         <article class="card" data-tags="animação" data-type="filmes" data-rating="9" data-year="2011"
-          data-desc="Araras em extinção, samba и brigas no Brasil.">
+          data-desc="Araras em extinção, samba e brigas no Brasil.">
           <div class="poster">
             <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pPvCSyQCY6Xtl78Qo9o0YStUj6o.jpg" alt="Rio"
               loading="lazy" />
@@ -1015,7 +1027,17 @@
 
       // Lista "Em Cartaz"
       const nowPlayingData = [
-        {
+      
+      {
+        title: "Cada Um na Sua Casa",
+        desc: "",
+        year: "2015",
+        rating: "",
+        image: "https://www.themoviedb.org/t/p/w600_and_h900_face/usFenYnk6mr8C62dB1MoAfSWMGR.jpg",
+        tags: "",
+        type: "filmes"
+      },   
+      {
           title: "Shrek 2",
           desc: "",
           year: "2004",
@@ -1023,6 +1045,42 @@
           image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2yYP0PQjG8zVqturh1BAqu2Tixl.jpg",
           tags: "",
           type: "filmes"
+        },
+        {
+         title: "Barbie e o Castelo de Diamante",
+         desc: "",
+         year: "2008",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/9TtBy4l0yFZoUhR8dVwI3x5PJ5a.jpg",
+         tags: "",
+         type: "filmes"
+        },
+        {
+         title: "Barbie Escola de Princesas",
+         desc: "",
+         year: "2011",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/3jNK0WP5qDewsdJQl88qFy3Xu8v.jpg",
+         tags: "",
+         type: "filmes"
+        },
+         {
+         title: "Barbie Vida de Sereia",
+         desc: "",
+         year: "2010",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/rBOaZdOI9KVYWvwst6atceKtVT9.jpg",
+         tags: "",
+         type: "filmes"
+        },
+        {
+         title: "Barbie e o Portal Secreto",
+         desc: "",
+         year: "2014",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/uhaUcohBo40n9Uf8CtKW6Q1aUA4.jpg",
+         tags: "",
+         type: "filmes"
         },
         {
           title: "O Jardim das Palavras",
@@ -1033,6 +1091,7 @@
           tags: "",
           type: "filmes"
         },
+
         {
           title: "Meu Amigo Totoro",
           desc: "",
@@ -1041,6 +1100,24 @@
           image: "https://image.tmdb.org/t/p/original/23KKTxDg6rxZVc66bloQQdPSr29.jpg",
           tags: "",
           type: "filmes"
+        },
+        {
+         title: "Dragon Ball Z O Ataque do Dragão",
+         desc: "",
+         year: "1995",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/3HKCZmoTK3gwYJAFBTvJETaaDFt.jpg",
+         tags: "",
+         type: "filmes"
+        },
+        {
+         title: "Dragon Ball Z: Bardock, O Pai de Goku",
+         desc: "",
+         year: "1990",
+         rating: "",
+         image: "https://www.themoviedb.org/t/p/w600_and_h900_face/TQtQcckcXwkWxcij6JxJiyVXkG.jpg",
+         tags: "",
+         type: "filmes"
         },
         {
           title: "Star Wars - O Império Contra-Ataca",
@@ -1066,15 +1143,6 @@
           year: "2007",
           rating: "8.7",
           image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/uR9rV69x4saB2vh9yfgQ5PA5E0r.jpg",
-          tags: "",
-          type: "filmes"
-        },
-        {
-          title: "Como treinar seu Dragão 3",
-          desc: "",
-          year: "2019",
-          rating: "9.9",
-          image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5uqxMHM7YLKk6yni4bOE0D6DVz8.jpg",
           tags: "",
           type: "filmes"
         },
